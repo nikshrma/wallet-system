@@ -1,10 +1,12 @@
-
-import { PrismaClient } from '@repo/db/client'
+"use client"
+import { counterAtom } from '@repo/store'
+import { useAtom } from "jotai"
 import {Button} from '@repo/ui/button'
-
-const prisma = new PrismaClient()
 export default function Home() {
+  const a = counterAtom;
+  const render = useAtom(a);
   return <div>
+     {JSON.stringify(a)}
     <Button appName='Blah'>
       Deer
     </Button>
