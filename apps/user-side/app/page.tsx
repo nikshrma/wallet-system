@@ -1,14 +1,10 @@
 "use client"
-import { counterAtom } from '@repo/store'
-import { useAtom } from "jotai"
-import {Button} from '@repo/ui/button'
+import { Appbar } from '@repo/ui/AppBar'
+import { signIn, signOut, useSession } from 'next-auth/react'
 export default function Home() {
-  const a = counterAtom;
-  const render = useAtom(a);
+  const user = useSession();
   return <div>
-     {JSON.stringify(a)}
-    <Button appName='Blah'>
-      Deer
-    </Button>
+    {JSON.stringify(user)}
+  <Appbar onSignin={()=>signIn()} onSignout={()=>signOut()} user={user.data?.user}></Appbar>
   </div>
 }
