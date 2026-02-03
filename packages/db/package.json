@@ -3,20 +3,22 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "scripts": {},
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
-  "exports" :{
-    "./client" : "./src/index.ts"
+  "exports": {
+    "./client": "./src/index.ts"
   },
   "dependencies": {
-    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/adapter-pg": "^7.3.0",
     "dotenv": "^16.0.3",
     "pg": "^8.17.1",
     "prisma": "^7.2.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2"
   }
 }
