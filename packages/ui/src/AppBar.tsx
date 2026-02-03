@@ -5,8 +5,8 @@ interface AppbarProps {
         name?: string | null;
     },
     // TODO: can u figure out what the type should be here?
-    onSignin: ()=> void | Promise<void>,
-    onSignout: ()=> void | Promise<void>
+    onSignin: () => void | Promise<void>,
+    onSignout: () => void | Promise<void>
 }
 
 export const Appbar = ({

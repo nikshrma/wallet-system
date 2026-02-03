@@ -6,12 +6,10 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types",
-    "prepare": "husky"
+    "check-types": "turbo run check-types"
   },
   "devDependencies": {
     "dotenv": "^17.2.3",
-    "husky": "^9.1.7",
     "prettier": "^3.7.4",
     "turbo": "^2.7.5",
     "typescript": "5.9.2"
@@ -25,6 +23,9 @@
     "packages/*"
   ],
   "dependencies": {
-    "@prisma/client": "^7.2.0"
+    "@prisma/client": "^7.2.0",
+    "@types/express": "^5.0.6",
+    "esbuild": "^0.27.2",
+    "express": "^5.2.1"
   }
 }
