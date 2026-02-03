@@ -60,13 +60,24 @@ export const authOptions = {
     secret: process.env.NEXTAUTH_SECRET || "localSecret",
     callbacks: {
         token: async ({ token, user }: any) => {
-            if (user) token.id = user.id;
+            console.log("JWT Callback", { token, user });
+            if (user) {
+                token.id = user.id;
+                token.sub = user.id;
+            }
             return token;
         },
-        session: async ({ session, token, user }: any) => {
-            if (session && session.user)
-                session.user.id = token.id;
-            return session
+        session: async ({ session, token }: any) => {
+            if (session && session.user) {
+                return {
+                    ...session,
+                    user: {
+                        ...session.user,
+                        id: token.id || token.sub
+                    }
+                }
+            }
+            return session;
         }
     }
 }

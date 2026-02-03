@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "@repo/ui/styles.css";
 import "./globals.css";
 import { Providers } from "./Providers";
+import { AppbarClient } from "@/components/AppbarClient";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -27,6 +28,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Providers>
+          <AppbarClient/>
           {children}
         </Providers>
       </body>
