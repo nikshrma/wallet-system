@@ -1,4 +1,5 @@
 import { PrismaClient } from "../generated/prisma/client.js"
+import bcrypt from "bcrypt";
 import { PrismaPg } from '@prisma/adapter-pg';
 const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({adapter})
@@ -9,7 +10,7 @@ async function main() {
     update: {},
     create: {
       number: '9999999999',
-      password: 'alice',
+      password: await bcrypt.hash('alice' , 10),
       name: 'alice',
       onRampTransaction: {
         create: {
@@ -27,7 +28,7 @@ async function main() {
     update: {},
     create: {
       number: '9999999998',
-      password: 'bob',
+      password: await bcrypt.hash('bob' , 10),
       name: 'bob',
        onRampTransaction: {
         create: {
