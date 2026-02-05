@@ -27,6 +27,9 @@ export async function p2pTransfer(to: string, amount: number) {
         const fromBalance = await tx.balance.findUnique({
             where: { userId: Number(from) },
           });
+          console.log("above sleep")
+          await new Promise(resolve=>setTimeout(resolve, 2000));
+          console.log("below sleep")
           if (!fromBalance || fromBalance.amount < amount) {
             throw new Error('Insufficient funds');
           }
