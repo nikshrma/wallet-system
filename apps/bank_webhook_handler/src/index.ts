@@ -12,10 +12,11 @@ type PaymentInfo = {
 
 app.post('/sbiWebhook', async (req: Request, res: Response) => {
     //TODO:Add zod validation here
-
+    //TODO:Check if its processing, only then make it successful
     const paymentInfo: PaymentInfo = {
         token: req.body.token,
-        userId: req.body.id,
+        userId: req.body.userId,
+        //TODO: change amount type to be a number
         amount: req.body.amount
     }
     try {
@@ -35,9 +36,7 @@ app.post('/sbiWebhook', async (req: Request, res: Response) => {
                     token: paymentInfo.token
                 },
                 data: {
-                    amount: {
-                        increment: Number(paymentInfo.amount)
-                    }
+                    status: "Success",
                 }
             })
         ])

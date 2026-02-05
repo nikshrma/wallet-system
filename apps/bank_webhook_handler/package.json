@@ -4,10 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
+    "start": "node -r dotenv/config dist/index.js dotenv_config_path=.env.local",
+    "dev": "npm run build && npm run start"
   },
   "dependencies": {
-    "@repo/db" : "*"
+    "@repo/db": "*",
+    "dotenv": "^17.2.3",
+    "esbuild": "^0.27.2"
   },
   "keywords": [],
   "author": "",
