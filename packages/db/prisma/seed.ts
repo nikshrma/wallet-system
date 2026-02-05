@@ -12,6 +12,12 @@ async function main() {
       number: '9999999999',
       password: await bcrypt.hash('alice' , 10),
       name: 'alice',
+      Balance:{
+        create:{
+          amount: 20000,
+          locked:0
+        },
+      },
       onRampTransaction: {
         create: {
           startTime: new Date(),
@@ -30,6 +36,12 @@ async function main() {
       number: '9999999998',
       password: await bcrypt.hash('bob' , 10),
       name: 'bob',
+      Balance:{
+        create:{
+          amount: 0,
+          locked:0
+        },
+      },
        onRampTransaction: {
         create: {
           startTime: new Date(),
