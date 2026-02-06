@@ -38,7 +38,7 @@ export async function p2pTransfer(to: string, amount: number) {
 
           await tx.balance.upsert({
         where: { userId: toUser.id },
-        create: { userId: toUser.id, amount,locked:0 },
+        create: { userId: toUser.id, amount},
         update: { amount: { increment: amount } },
 });
 

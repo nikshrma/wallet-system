@@ -14,8 +14,7 @@ async function main() {
       name: 'alice',
       Balance:{
         create:{
-          amount: 20000,
-          locked:0
+          amount: 20000
         },
       },
       onRampTransaction: {
@@ -38,8 +37,7 @@ async function main() {
       name: 'bob',
       Balance:{
         create:{
-          amount: 0,
-          locked:0
+          amount: 0
         },
       },
        onRampTransaction: {
