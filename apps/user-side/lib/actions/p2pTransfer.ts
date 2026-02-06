@@ -5,6 +5,7 @@ import { prisma } from "@repo/db/client";
 
 
 export async function p2pTransfer(to: string, amount: number) {
+    //TODO: check that the user isnt sending money to himself
     const session = await getServerSession(authOptions);
     const from = session?.user?.id;
     if (!from) {
@@ -24,10 +25,9 @@ export async function p2pTransfer(to: string, amount: number) {
         }
     }
     await prisma.$transaction(async (tx) => {
-        const fromBalance = await tx.balance.findUnique({
-            where: { userId: Number(from) },
-          });
-          if (!fromBalance || fromBalance.amount < amount) {
+        const fromBalance = await tx.$queryRaw<{amount:number}[]>`SELECT amount from "Balance"
+        WHERE userId=${Number(from)} FOR UPDATE`;
+          if (fromBalance.length===0 ||!fromBalance[0] || fromBalance[0].amount < amount) {
             throw new Error('Insufficient funds');
           }
 
@@ -36,9 +36,11 @@ export async function p2pTransfer(to: string, amount: number) {
             data: { amount: { decrement: amount } },
           });
 
-          await tx.balance.update({
-            where: { userId: toUser.id },
-            data: { amount: { increment: amount } },
-          });
+          await tx.balance.upsert({
+        where: { userId: toUser.id },
+        create: { userId: toUser.id, amount,locked:0 },
+        update: { amount: { increment: amount } },
+});
+
     });
 }
