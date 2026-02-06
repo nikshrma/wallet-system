@@ -15,7 +15,7 @@ export async function p2pTransfer(to: string, amount: number) {
     }
     const toUser = await prisma.user.findFirst({
         where: {
-            number:to
+            number: to
         }
     });
 
@@ -25,22 +25,32 @@ export async function p2pTransfer(to: string, amount: number) {
         }
     }
     await prisma.$transaction(async (tx) => {
-        const fromBalance = await tx.$queryRaw<{amount:number}[]>`SELECT amount from "Balance"
-        WHERE userId=${Number(from)} FOR UPDATE`;
-          if (fromBalance.length===0 ||!fromBalance[0] || fromBalance[0].amount < amount) {
+        const fromBalance = await tx.$queryRaw<{ amount: number }[]>`SELECT amount from "Balance"
+        WHERE "userId"=${Number(from)} FOR UPDATE`;
+        if (fromBalance.length === 0 || !fromBalance[0] || fromBalance[0].amount < amount) {
             throw new Error('Insufficient funds');
-          }
+        }
 
-          await tx.balance.update({
+        await tx.balance.update({
             where: { userId: Number(from) },
             data: { amount: { decrement: amount } },
-          });
+        });
 
-          await tx.balance.upsert({
-        where: { userId: toUser.id },
-        create: { userId: toUser.id, amount},
-        update: { amount: { increment: amount } },
-});
+        await tx.balance.upsert({
+            where: { userId: toUser.id },
+            create: { userId: toUser.id, amount },
+            update: { amount: { increment: amount } },
+        });
+
+        await tx.p2PTransfers.create({
+            data: {
+                fromUserId: Number(from),
+                toUserId: toUser.id,
+                amount,
+                timestamp: new Date()
+            }
+        })
+
 
     });
 }

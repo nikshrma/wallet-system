@@ -55,6 +55,7 @@ model P2PTransfers{
   fromUser User @relation( name: "FromUserField" , fields: [fromUserId] , references: [id])
   toUserId Int
   toUser User @relation(name: "ToUserField" , fields: [toUserId] , references: [id])
+  timestamp DateTime @default(now())
 }
 enum AuthType {
   Google
