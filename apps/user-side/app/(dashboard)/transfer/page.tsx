@@ -17,19 +17,56 @@ async function getBalance(userId: number) {
     }
 }
 
-async function getOnRampTransactions(userId: number) {
-    const txns = await prisma.onRampTransaction.findMany({
+async function getTransactions(userId: number) {
+    const onRampTxns = await prisma.onRampTransaction.findMany({
         where: {
             userId: userId
         }
     });
-    return txns.map(t => ({
-        id:t.id,
+
+    const sentTransfers = await prisma.p2PTransfers.findMany({
+        where: {
+            fromUserId: userId
+        }
+    });
+
+    const receivedTransfers = await prisma.p2PTransfers.findMany({
+        where: {
+            toUserId: userId
+        }
+    });
+
+    const formattedOnRamp = onRampTxns.map(t => ({
+        id: `on_ramp_${t.id}`,
         time: t.startTime,
         amount: t.amount,
         status: t.status,
-        provider: t.provider
-    }))
+        provider: t.provider,
+        type: "on_ramp"
+    }));
+
+    const formattedSent = sentTransfers.map(t => ({
+        id: `p2p_sent_${t.id}`,
+        time: t.timestamp,
+        amount: -t.amount, // Negative for sent
+        status: "Success",
+        provider: "Sent P2P",
+        type: "p2p_sent"
+    }));
+
+    const formattedReceived = receivedTransfers.map(t => ({
+        id: `p2p_received_${t.id}`,
+        time: t.timestamp,
+        amount: t.amount, // Positive for received
+        status: "Success",
+        provider: "Received P2P",
+        type: "p2p_received"
+    }));
+
+    const allTransactions = [...formattedOnRamp, ...formattedSent, ...formattedReceived];
+
+    // Sort by time descending (newest first)
+    return allTransactions.sort((a, b) => b.time.getTime() - a.time.getTime());
 }
 
 export default async function () {
@@ -38,7 +75,7 @@ export default async function () {
         redirect("/api/auth/signin");
     }
     const balance = await getBalance(Number(session?.user?.id));
-    const transactions = await getOnRampTransactions(Number(session?.user?.id));
+    const transactions = await getTransactions(Number(session?.user?.id));
 
     return <div className="w-screen">
         <div className="text-4xl text-[#6a51a6] pt-8 mb-8 font-bold">
@@ -49,7 +86,7 @@ export default async function () {
                 <AddMoney />
             </div>
             <div>
-                <BalanceCard amount={balance.amount}/>
+                <BalanceCard amount={balance.amount} />
                 <div className="pt-4">
                     <OnRampTransactions transactions={transactions} />
                 </div>
