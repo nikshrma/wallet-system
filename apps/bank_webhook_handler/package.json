@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "npx esbuild ./src/index.ts --bundle --platform=node --outfile=dist/index.js",
-    "start": "node -r dotenv/config dist/index.js dotenv_config_path=.env.local",
+    "start": "node -r dotenv/config dist/index.js dotenv_config_path=../../.env",
     "dev": "npm run build && npm run start"
   },
   "dependencies": {
