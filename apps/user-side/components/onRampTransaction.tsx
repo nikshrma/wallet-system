@@ -7,6 +7,7 @@ export const OnRampTransactions = ({
         id: number | string, // changed to accept string IDs from normalization if needed, though simpler usually best
         time: Date,
         amount: number,
+        // TODO: Can the type of `status` be more specific?
         status: string,
         provider: string
     }[]
