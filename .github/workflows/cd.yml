@@ -47,7 +47,9 @@ jobs:
             sudo docker rm web-app || true
 
             sudo docker run -d \
-              --name web-app \
-              -p 3005:3000 \
-              -e DATABASE_URL="${{ secrets.PROD_DATABASE_URL }}" \
-              nikshrma/wallet-images:latest
+            --name web-app \
+            -p 3005:3000 \
+            -e DATABASE_URL="${{ secrets.PROD_DATABASE_URL }}" \
+            -e NEXTAUTH_URL="http://ec2-52-91-92-27.compute-1.amazonaws.com:3005" \
+            -e NEXTAUTH_SECRET="${{ secrets.NEXTAUTH_SECRET }}" \
+            nikshrma/wallet-images:latest
