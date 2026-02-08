@@ -30,3 +30,24 @@ jobs:
 
       - name: Verify Pushed Image
         run: docker pull nikshrma/wallet-images:latest 
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            sudo docker pull nikshrma/wallet-images:latest
+            sudo docker run --rm \
+              -e DATABASE_URL="${{ secrets.PROD_DATABASE_URL }}" \
+              nikshrma/wallet-images:latest \
+              npx prisma migrate deploy
+
+            sudo docker stop web-app || true
+            sudo docker rm web-app || true
+
+            sudo docker run -d \
+              --name web-app \
+              -p 3005:3000 \
+              -e DATABASE_URL="${{ secrets.PROD_DATABASE_URL }}" \
+              nikshrma/wallet-images:latest
