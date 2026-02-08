@@ -7,7 +7,8 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "db:client": "cd packages/db && npx prisma generate && cd ../.."
+    "db:client": "cd packages/db && npx prisma generate && cd ../..",
+    "start-user-app": "cd ./apps/user-side && npm run start"
   },
   "devDependencies": {
     "dotenv": "^17.2.3",
