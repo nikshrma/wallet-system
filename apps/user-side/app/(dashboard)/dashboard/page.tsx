@@ -1,6 +1,5 @@
-
 export default function() {
     return <div>
-       This is the dashboard page
+        //TODO: Add a wallet dashboard - the goal here is too learn what a timescale db is 
     </div>
 }
