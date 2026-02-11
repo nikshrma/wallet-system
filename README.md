@@ -25,7 +25,7 @@ On every push to the `main` branch, the `Build and Deploy to Docker Hub` workflo
 1.  **Docker Build**: Builds a Docker image for the user application, identifying it with the `latest` tag.
 2.  **Push to Docker Hub**: Pushes the built image to the [official Docker Hub repository](https://hub.docker.com/r/nikshrma/wallet-images).
 3.  **Deploy to EC2**: Connects to the production EC2 instance via SSH, pulls the latest image, runs database migrations, and restarts the application container.
-(Note: The EC2 instance is currently not running, so the deployment will fail at the SSH step.)
+**(Note: The EC2 instance is currently not running, so the deployment will fail at the SSH step.)**
 **Docker Hub Repository:** [nikshrma/wallet-images](https://hub.docker.com/r/nikshrma/wallet-images)
 
 ## Tech Stack
