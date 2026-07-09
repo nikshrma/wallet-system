@@ -9,6 +9,42 @@ A robust and scalable wallet application designed to handle high-frequency finan
 
 Built as a TurboRepo monorepo, it shares rigorous configuration and type definitions across all applications to ensure code quality and consistency.
 
+## Architecture
+
+```mermaid
+graph TD
+    Client([User Client])
+    BankAPI([Banking Provider])
+
+    subgraph "TurboRepo Workspace"
+        subgraph "Applications (apps/)"
+            UserApp["User Application<br/>(Next.js)"]
+            WebhookHandler["Webhook Handler<br/>(Express.js)"]
+        end
+
+        subgraph "Shared Packages (packages/)"
+            UI["UI Components<br/>(React)"]
+            Store["State Management<br/>(Jotai)"]
+            DBPackage["Database Client<br/>(Prisma)"]
+        end
+    end
+
+    Database[("PostgreSQL Database")]
+
+    %% External Interactions
+    Client -->|Interacts with UI| UserApp
+    BankAPI -->|Sends Webhooks (On-ramp)| WebhookHandler
+
+    %% Internal Dependencies
+    UserApp -.->|Imports| UI
+    UserApp -.->|Imports| Store
+    UserApp -->|Reads/Writes| DBPackage
+    WebhookHandler -->|Updates Balance & Tx| DBPackage
+
+    %% Database Connection
+    DBPackage ===>|TCP/IP| Database
+```
+
 ## CI/CD Pipeline & Docker
 
 This project employs a fully automated CI/CD pipeline using **GitHub Actions** and **Docker**.
