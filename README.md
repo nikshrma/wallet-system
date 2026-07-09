@@ -33,7 +33,7 @@ graph TD
 
     %% External Interactions
     Client -->|Interacts with UI| UserApp
-    BankAPI -->|Sends Webhooks (On-ramp)| WebhookHandler
+    BankAPI -->|Sends Webhooks for On-ramp| WebhookHandler
 
     %% Internal Dependencies
     UserApp -.->|Imports| UI
